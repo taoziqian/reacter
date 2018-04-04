@@ -14,7 +14,12 @@ import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
+import InboxIcon from 'material-ui-icons/MoveToInbox';
+import DraftsIcon from 'material-ui-icons/Drafts';
+import StarIcon from 'material-ui-icons/Star';
+import SendIcon from 'material-ui-icons/Send';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
+import { ListItem, ListItemIcon, ListItemText } from 'material-ui/List';
 import { mailFolderListItems, otherMailFolderListItems } from './tileData';
 
 const drawerWidth = 240;
@@ -107,10 +112,25 @@ const styles = theme => ({
 });
 //  ---------------------
 class PersistentDrawer extends React.Component {
-  state = {
-    open: false,
-    anchor: 'left',
-  };
+  constructor(props){
+    super(props);
+    this.state = {
+      open: false,
+      anchor: 'left',
+      who:'',
+    };
+    this.switchName=this.switchName.bind(this);
+  }
+  
+  switchName(i,event){
+    
+    if (i===1)
+      this.setState((prevState,props)=>({who:'test1'}))
+    else if (i===2)
+      this.setState((prevState,props)=>({who:'test2'}))
+      else if (i===3)
+      this.setState((prevState,props)=>({who:'test3'}))
+  }
 
   handleDrawerOpen = () => {
     this.setState({ open: true });
@@ -146,9 +166,27 @@ class PersistentDrawer extends React.Component {
         </div>
         {/* 分割线 */}
         <Divider />          
-        <List>{mailFolderListItems}</List>
+        <div>
+    <ListItem button onClick={this.switchName.bind(this,1)}>
+      <ListItemIcon>
+        <InboxIcon />
+      </ListItemIcon>
+      <ListItemText primary="demo1" />
+    </ListItem>
+    <ListItem button onClick={this.switchName.bind(this,2)}>
+      <ListItemIcon>
+        <StarIcon />
+      </ListItemIcon>
+      <ListItemText primary="demo2" />
+    </ListItem>
+    <ListItem button onClick={this.switchName.bind(this,3)}>
+      <ListItemIcon>
+        <SendIcon />
+      </ListItemIcon>
+      <ListItemText primary="demo3" />
+    </ListItem>
+  </div>
         <Divider />
-        <List>{otherMailFolderListItems}</List>
       </Drawer>
     );
 
@@ -208,7 +246,7 @@ class PersistentDrawer extends React.Component {
             })}
           >
             <div className={classes.drawerHeader} />   
-            <Typography>{'展示'}</Typography>
+            <Typography>{`${this.state.who}`}</Typography>
           </main>
          {/* {after} */}
         </div>
